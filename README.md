@@ -1,2 +1,2 @@
 # python
-一些python相关的小代码
+练手的一些python相关的代码
