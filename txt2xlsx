@@ -1,7 +1,9 @@
+#! /usr/local/bin/python3
+# -*- coding: utf-8 -*-
+# 将文件夹下（不包括子文件夹）的文件转换为xlsx
+
 import os
 from openpyxl import Workbook
-
-# 将文件夹下（不包括子文件夹）的文件转换为xlsx
 
 
 def read_filename(file_dir):
