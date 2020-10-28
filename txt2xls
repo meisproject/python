@@ -1,9 +1,10 @@
 #! /usr/local/bin/python3
 # -*- coding: utf-8 -*-
-# 将文件夹及子文件夹下的所有txt转换为xls
-
 import xlwt
 import os
+
+# 将文件夹及子文件夹下的所有txt转换为xls
+# 目前发现一个Bug，如果是由_连接的数字，中间的_会被删掉，转成纯数字
 
 
 def read_filename(file_dir):
@@ -13,7 +14,7 @@ def read_filename(file_dir):
 
 def txt_xls(files, dirs, root):
     for file in files:
-        if file.endswith(".txt"):  # 只转换txt格式
+        if file.endswith(".txt") | file.endswith(".tsv"):  # 只转换txt格式
             try:
                 f = open(os.path.join(root, file))
                 xls = xlwt.Workbook()  # 创建工作簿
@@ -26,10 +27,11 @@ def txt_xls(files, dirs, root):
                     line = line.rstrip('\n')
                     for i in range(len(line.split('\t'))):
                         item = line.split('\t')[i]
-                        try:
-                            item = float(item)
-                        except ValueError:
-                            pass
+                        if item.isdigit():  # 如果是数值，转化为浮点型
+                            try:
+                                item = float(item)
+                            except ValueError:
+                                pass
                         sheet.write(x, i, item)  # x单元格经度，i+1 单元格纬度，输出内容
                     x += 1  # excel另起一行
                 f.close()  # 关闭工作簿
@@ -45,5 +47,5 @@ def txt_xls(files, dirs, root):
 
 
 if __name__ == "__main__":
-    fis, dis, rot = read_filename(r"C:\Users\asus\Desktop\1")  # 路径按需修改
+    fis, dis, rot = read_filename(r"C:\Users\asus\Desktop\1\test2")
     txt_xls(fis, dis, rot)
