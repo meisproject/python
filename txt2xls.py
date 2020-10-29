@@ -4,7 +4,6 @@ import xlwt
 import os
 
 # 将文件夹及子文件夹下的所有txt转换为xls
-# 目前发现一个Bug，如果是由_连接的数字，中间的_会被删掉，转成纯数字
 
 
 def read_filename(file_dir):
@@ -27,7 +26,9 @@ def txt_xls(files, dirs, root):
                     line = line.rstrip('\n')
                     for i in range(len(line.split('\t'))):
                         item = line.split('\t')[i]
-                        if item.isdigit():  # 如果是数值，转化为浮点型
+                        # 如果是有下滑线的字符串，不直接转浮点数，防止发生1_2_3这种转化为123
+                        # 数值转为浮点数，防止字符串格式的数值在excel中显示有一个小绿点
+                        if '_' not in item:
                             try:
                                 item = float(item)
                             except ValueError:
